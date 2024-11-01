@@ -40,7 +40,7 @@
       onItemClick () {
         this.$emit('update:drawerOpen', false)
         setTimeout(() => {
-          document.documentElement.scrollTop = document.querySelector('.content-wrap').offsetTop - 42
+          document.documentElement.scrollTop = (<HTMLElement>document.querySelector('.content-wrap')).offsetTop - 42
         }, 200)
       }
     }

@@ -47,7 +47,7 @@ w-toolbar.main-toolbar(fixed)
       async scrollTop (toContent = false) {
         await this.$nextTick()
         document.documentElement.scrollTop = toContent
-          ? document.querySelector('.content-wrap').offsetTop - 42
+          ? (<HTMLElement>document.querySelector('.content-wrap')).offsetTop - 42
           : 0
       }
     }
