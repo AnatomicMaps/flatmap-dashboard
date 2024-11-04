@@ -1,18 +1,30 @@
+
 import { defineStore } from 'pinia'
 
-interface State {
+interface DashboardState {
     currentPage: string
-    usePug: boolean
-    tabsView: boolean
     darkMode: boolean
 }
 
+/*
+interface MyStore {
+    state: {
+        count: number
+    };
+    dispatch: (actionName: string, ...args: unknown[]) => void;
+    commit: (mutationName: string, ...args: unknown[]) => void;
+}
+
+declare module '@vue/runtime-core' {
+    interface ComponentPublicInstance {
+        $store: MyStore;
+    }
+}
+*/
 export const useMainStore = defineStore('dashboard', {
-  state: (): State => {
+  state: (): DashboardState => {
     return {
-      currentPage: '', // The title of the page, to pass to Codepen from examples.
-      usePug: false,
-      tabsView: true,
+      currentPage: '',
       darkMode: false
     }
   },
@@ -24,24 +36,6 @@ export const useMainStore = defineStore('dashboard', {
     },
     setCurrentPage (state: State, pageTitle: string) {
       state.currentPage = pageTitle
-    },
-    initUsePug (state: State) {
-      state.usePug = !!parseInt(localStorage.getItem('usePug'))
-    },
-    setUsePug (state: State, usePug: boolean) {
-      if (state.usePug !== usePug) {
-        state.usePug = usePug
-        localStorage.setItem('usePug', +usePug)
-      }
-    },
-    initTabsView (state: State) {
-      state.tabsView = !!parseInt(localStorage.getItem('tabsView'))
-    },
-    setTabsView (state: State, tabsView: boolean) {
-      if (state.tabsView !== tabsView) {
-        state.tabsView = tabsView
-        localStorage.setItem('tabsView', +tabsView)
-      }
     }
   },
 */
