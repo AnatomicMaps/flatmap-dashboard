@@ -2,8 +2,8 @@
   const sections = [
     { label: 'Overview', route: '/', icon: 'mdi mdi-gauge'},
     { label: 'Flatmaps', route: '/flatmaps', icon: 'mdi mdi-human-male-female'},
-//    { label: 'Knowledge', route: '/knowledge', icon: 'mdi mdi-database' },
-//    { label: 'Admin', route: '/admin', icon: 'mdi mdi-tools' }
+    { label: 'Knowledge', route: '/knowledge', icon: 'mdi mdi-database' },
+    { label: 'Admin', route: '/admin', icon: 'mdi mdi-tools' }
   ]
 
   const emit = defineEmits<{
