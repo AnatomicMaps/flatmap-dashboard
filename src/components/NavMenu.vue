@@ -1,3 +1,16 @@
+<script setup lang="ts">
+  const sections = [
+    { label: 'Overview', route: '/', icon: 'mdi mdi-gauge'},
+    { label: 'Flatmaps', route: '/flatmaps', icon: 'mdi mdi-human-male-female'},
+//    { label: 'Knowledge', route: '/knowledge', icon: 'mdi mdi-database' },
+//    { label: 'Admin', route: '/admin', icon: 'mdi mdi-tools' }
+  ]
+
+  const emit = defineEmits<{
+    'update:drawerOpen': [open: boolean]
+  }>()
+</script>
+
 <template lang="pug">
 .nav-menu-wrap
   .nav-menu
@@ -12,40 +25,10 @@
     w-tree.mt3(
       :data="sections"
       selectable
-      @click="onItemClick"
+      @click="$emit('update:drawerOpen', false)"
       branch-icon="wi-check"
       leaf-icon="wi-check")
 </template>
-
-<script lang="ts">
-  import { defineComponent } from 'vue'
-
-  export default defineComponent({
-    props: {
-      drawerOpen: { type: Boolean, default: false }
-    },
-
-    emits: ['update:drawerOpen'],
-
-    data: () => ({
-      sections: [
-        { label: 'Overview', route: '/', icon: 'mdi-view-dashboard' },
-        { label: 'Flatmaps', route: '/flatmaps', icon: 'mdi mdi-human-male-female' },
-        { label: 'Knowledge', route: '/knowledge', icon: 'mdi mdi-database' },
-        { label: 'Admin', route: '/admin', icon: 'mdi mdi-tools' }
-      ]
-    }),
-
-    methods: {
-      onItemClick () {
-        this.$emit('update:drawerOpen', false)
-        setTimeout(() => {
-          document.documentElement.scrollTop = (<HTMLElement>document.querySelector('.content-wrap')).offsetTop - 42
-        }, 200)
-      }
-    }
-  })
-</script>
 
 <style lang="scss">
 @use '@/scss/index.scss' as *;
@@ -53,8 +36,8 @@
 .nav-menu-wrap {
   position: relative;
   width: 100%;
-  min-width: 180px;
-  max-width: 300px;
+  min-width: 100px;
+  max-width: 200px;
   margin-left: -12px;
   padding-left: 30px;
 
@@ -69,7 +52,6 @@
 }
 
 .nav-menu {
-  // Don't apply to the w-app examples.
   .nav-menu-wrap & {
     height: 90vh;
     overflow: auto;

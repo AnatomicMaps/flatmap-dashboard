@@ -1,15 +1,17 @@
+<script setup lang="ts">
+  import { computed } from 'vue'
+
+  const version = computed<string>(() => "0.0.1")
+
+  const drawerOpen = defineModel<boolean>()
+
+</script>
+
 <template lang="pug">
 w-toolbar.main-toolbar(fixed)
   router-link.w-flex.no-grow.fill-height.align-center.home-link(to="/" @click.native="scrollTop(false)")
     span.grey-dark1 Flatmap Server Dashboard
   .spacer
-
-  w-switch.mr2(
-    :model-value="store.darkMode"
-    @update:model-value="$store.setDarkMode($event), $waveui.switchTheme($event ? 'dark' : 'light')"
-    bg-color="blue-dark5")
-    template(#thumb)
-      w-icon mdi {{ store.darkMode ? 'mdi-weather-night' : 'mdi-white-balance-sunny' }}
 
   strong.version.size--xs(v-html="`v<code>${version}</code>`")
 
@@ -21,38 +23,6 @@ w-toolbar.main-toolbar(fixed)
     round
     :icon="drawerOpen ? 'wi-cross' : 'mdi mdi-menu'")
 </template>
-
-<script setup lang="ts">
-  import { useMainStore } from '../store'
-  const store = useMainStore()
-</script>
-
-<script lang="ts">
-  import { defineComponent } from 'vue'
-
-  export default defineComponent({
-    props: {
-      drawerOpen: { type: Boolean, default: false }
-    },
-
-    emits: ['update:drawerOpen'],
-
-    computed: {
-      version () {
-        return "0.0.1"
-      }
-    },
-
-    methods: {
-      async scrollTop (toContent = false) {
-        await this.$nextTick()
-        document.documentElement.scrollTop = toContent
-          ? (<HTMLElement>document.querySelector('.content-wrap')).offsetTop - 42
-          : 0
-      }
-    }
-  })
-</script>
 
 <style lang="scss">
 @use '../scss/index.scss' as *;
