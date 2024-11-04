@@ -15,10 +15,10 @@
 <template lang="pug">
 w-drawer.nav-drawer(v-if="isMobile" v-model="drawerOpen" right :width="330")
   nav-menu(v-model:drawer-open="drawerOpen")
-header
+header.no-shrink
   toolbar(v-model:drawer-open="drawerOpen")
-.content-wrap.w-flex
-  nav-menu.navigation(v-if="!isMobile" v-model:drawer-open="drawerOpen")
+w-flex.content-wrap.no-shrink
+  nav-menu.navigation.no-shrink(v-if="!isMobile" v-model:drawer-open="drawerOpen")
   .main-content.w-flex.column.grow(:class="`main-content--${$route.name}`")
     router-view
 </template>
