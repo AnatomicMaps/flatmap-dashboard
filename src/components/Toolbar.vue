@@ -44,29 +44,6 @@ div.main-toolbar {
     span {font: 22px 'title font', helvetica, arial;}
   }
 
-  .v3-is-out {
-    color: #000;
-    cursor: pointer;
-    font-weight: bold;
-    padding: 2px 8px;
-    background: linear-gradient(110deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-    mix-blend-mode: difference;
-    overflow: hidden;
-    position: relative;
-
-    &:before {
-      content: '';
-      position: absolute;
-      top: -120%;
-      right: -150%;
-      width: 50%;
-      height: 300%;
-      transform: rotate(30deg);
-      background: linear-gradient(to right, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.13), rgba(255, 246, 198, 0.8), rgba(255, 255, 255, 0));
-    }
-    &:hover:before {animation: shine 2s infinite;}
-  }
-
   .version {
     color: rgba(var(--w-base-color-rgb), 0.35);
 
