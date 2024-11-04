@@ -69,7 +69,7 @@ w-table(
   @row-select="selectionInfo = $event"
   fixed-headers
   resizable-columns
-  style="height: 250px")
+  style="height: 600px")
 
 //.mt4.title4 Selection info:
 //pre {{ selectionInfo }}
