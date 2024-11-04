@@ -1,8 +1,10 @@
-import { defineConfig } from 'vite'
-import { fileURLToPath, URL } from 'url'
-import vue from '@vitejs/plugin-vue'
+import { fileURLToPath, URL } from 'node:url'
 
-// https://vitejs.dev/config/
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import vueDevTools from 'vite-plugin-vue-devtools'
+
+// https://vite.dev/config/
 export default defineConfig({
   css: {
     preprocessorOptions: {
@@ -13,14 +15,12 @@ export default defineConfig({
     }
   },
   plugins: [
-    vue()
+    vue(),
+    vueDevTools({componentInspector: false}),
   ],
   resolve: {
-      alias: {
-          '@': fileURLToPath(new URL('./src', import.meta.url))
-      }
-  },
-  define: {
-    __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false'
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
   }
 })
