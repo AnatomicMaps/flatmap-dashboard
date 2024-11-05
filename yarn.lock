@@ -1984,9 +1984,10 @@ vue@^3.5.12:
     "@vue/server-renderer" "3.5.12"
     "@vue/shared" "3.5.12"
 
-"wave-ui@link:../../build/wave-ui":
-  version "0.0.0"
-  uid ""
+wave-ui@^3.18.0:
+  version "3.18.0"
+  resolved "https://registry.yarnpkg.com/wave-ui/-/wave-ui-3.18.0.tgz#d9f2a8b9740b3e3fa358a81439329b233f816980"
+  integrity sha512-IDJ19/UGXigGD+bmq5PINwRTXnHq8oeG8BPBk7O55PTT9DgsvoqmxpJJoApj66qImbDAQ1bFd5MeQb6amHLfHg==
 
 which@^2.0.1:
   version "2.0.2"
