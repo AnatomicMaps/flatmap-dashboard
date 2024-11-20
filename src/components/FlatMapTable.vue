@@ -21,7 +21,7 @@
   }
 
   interface FlatmapData {
-    id: number,
+    id: number
     name: string
     describes: string
     taxon: string
