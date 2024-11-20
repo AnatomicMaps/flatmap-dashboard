@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { computed } from 'vue'
 
-  const version = computed<string>(() => "0.0.1")
+  const version = computed<string>(() => APP_VERSION)
 
   const drawerOpen = defineModel<boolean>()
 
