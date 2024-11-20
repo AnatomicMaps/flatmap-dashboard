@@ -5,20 +5,35 @@
   import type {$waveui as WaveUI} from 'wave-ui'
   const $waveui = inject('$waveui') as WaveUI
 
-  import NavMenu from './components/NavMenu.vue'
-  import Toolbar from './components/Toolbar.vue'
-
   const drawerOpen = defineModel<boolean>()
   const isMobile = computed(() => $waveui.breakpoint.xs)
 </script>
 
+<script lang="ts">
+  import NavMenu from './components/NavMenu.vue'
+  import Toolbar from './components/Toolbar.vue'
+
+  export type ServerEndpoint = {
+    name: string
+    url: string
+  }
+  export const FLATMAP_SERVER_ENDPOINTS: ServerEndpoint[] = [
+    {name: 'local', url: 'http://localhost:8000'},
+    {name: 'curation', url: 'https://mapcore-demo.org/curation/flatmap/'},
+    {name: 'devel', url: 'https://mapcore-demo.org/devel/flatmap/v4/'},
+    {name: 'fccb', url: 'https://mapcore-demo.org/fccb/flatmap/'},
+    {name: 'staging', url: 'https://mapcore-demo.org/staging/flatmap/v1/'},
+    {name: 'production', url: 'https://mapcore-demo.org/current/flatmap/v3/'},
+  ]
+</script>
+
 <template lang="pug">
 w-drawer.nav-drawer(v-if="isMobile" v-model="drawerOpen" right :width="330")
-  nav-menu(v-model:drawer-open="drawerOpen")
+  NavMenu(v-model:drawer-open="drawerOpen")
 header.no-shrink
-  toolbar(v-model:drawer-open="drawerOpen")
+  Toolbar(v-model:drawer-open="drawerOpen")
 w-flex.content-wrap.no-shrink
-  nav-menu.navigation.no-shrink(v-if="!isMobile" v-model:drawer-open="drawerOpen")
+  NavMenu.navigation.no-shrink(v-if="!isMobile" v-model:drawer-open="drawerOpen")
   .main-content.w-flex.column.grow(:class="`main-content--${$route.name}`")
     router-view
 </template>
