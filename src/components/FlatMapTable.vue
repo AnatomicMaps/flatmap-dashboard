@@ -27,19 +27,49 @@
     taxon: string
     biologicalSex?: string
     created: string
+    creator: string
+    knowledge: string
     servers: string[]
     uuid?: string
     [propName: string]: unknown
   }
+
+  interface FlatmapMetadata {
+    name: string
+    describes: string
+    taxon: string
+    biologicalSex?: string
+    created: string
+    creator: string
+    uuid?: string
+    sckan: Record<string, any>
+  }
+
+//==============================================================================
+
 const tableHeaders: TableHeader[] = [
     { label: 'Name', key: 'name' },
     { label: 'Describes', key: 'describes' },
     { label: 'Taxon', key: 'taxon' },
     { label: 'Biological Sex', key: 'biologicalSex' },
     { label: 'Created', key: 'created' },
+    { label: 'Mapmaker', key: 'creator' },
+    { label: 'SCKAN Release', key: 'knowledge' },
     { label: 'Servers', key: 'servers' },
     { label: 'UUID', key: 'uuid' },
   ]
+
+  const defaultRow: FlatmapData = {
+      id: 0,
+      name: '',
+      describes: '',
+      taxon: '',
+      biologicalSex: '',
+      created: '',
+      creator: '',
+      knowledge: '',
+      servers: ['']
+  }
 
   const flatmapTable: FlatmapTable = {
     headers: tableHeaders,
@@ -68,10 +98,17 @@ const tableHeaders: TableHeader[] = [
     for (const server of serverEndpoints) {
       try {
         const result = await fetch(server.url)
-        const maps: FlatmapData[] = await result.json()
-        maps.forEach(map => {
-          if (!('biologicalSex' in map)) {
-            map.biologicalSex = ''
+        const mapMetadata: FlatmapMetadata[] = await result.json()
+        mapMetadata.forEach(metadata => {
+          const map = Object.assign({}, defaultRow, metadata)
+          if ('creator' in map && map.creator.startsWith('mapmaker ')) {
+            map.creator = map.creator.slice(9)
+          }
+          if ('sckan' in map && 'knowledge-source' in map['sckan']) {
+            map.knowledge = map.sckan['knowledge-source']
+            if (map.knowledge.startsWith('sckan-')) {
+              map.knowledge = map.knowledge.slice(6)
+            }
           }
           if ('uuid' in map) {
             if (mapsByUUID.has(map.uuid!)) {
@@ -83,6 +120,7 @@ const tableHeaders: TableHeader[] = [
               flatmaps.push(map)
             }
           } else {
+            map.uuid = ''
             map.servers = [server.name]
             flatmaps.push(map)
           }
