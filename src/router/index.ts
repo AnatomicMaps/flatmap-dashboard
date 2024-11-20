@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Overview from '../views/Overview.vue'
-import FlatMaps from '../views/FlatMaps.vue'
+import Flatmaps from '../views/Flatmaps.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,7 +13,7 @@ const router = createRouter({
     {
       path: '/flatmaps',
       name: 'flatmaps',
-      component: FlatMaps
+      component: Flatmaps
     }
   ]
 })
