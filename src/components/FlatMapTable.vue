@@ -17,7 +17,7 @@
     sort: string
     keyword: string
     keywordFilter: (keyword: string) => (item: FlatmapData) => boolean
-    loading: boolean|string
+    loading: boolean
   }
 
   interface FlatmapData {
@@ -84,7 +84,7 @@ const tableHeaders: TableHeader[] = [
         return new RegExp(keyword, 'i').test(allColumns)
       }
     },
-    loading: 'header'
+    loading: true
   }
 
   const table = ref(flatmapTable)
