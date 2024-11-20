@@ -1,31 +1,23 @@
 <script setup lang="ts">
+
   import { ref } from 'vue'
 
-  import {FLATMAP_SERVER_ENDPOINTS} from '../App.vue'
+  import type {ServerEndpoint} from '../App.vue'
 
-  const mapHeaders = [
-    { label: 'Name', key: 'name' },
-    { label: 'Describes', key: 'describes' },
-    { label: 'Taxon', key: 'taxon' },
-    { label: 'Biological Sex', key: 'biologicalSex' },
-    { label: 'Created', key: 'created' },
-    { label: 'Servers', key: 'servers' },
-    { label: 'UUID', key: 'uuid' },
-  ]
+//==============================================================================
 
   type TableHeader = {
     key: string
     label: string
-  }[]
+  }
 
-  type Item = Record<string, string|number>
-
-  type Table = {
-    headers: TableHeader
+  interface FlatmapTable {
+    headers: TableHeader[]
     items: FlatmapData[]
-    sort?: string
+    sort: string
     keyword: string
-    keywordFilter: (keyword: string) => (item: Item) => boolean
+    keywordFilter: (keyword: string) => (item: FlatmapData) => boolean
+    loading: boolean|string
   }
 
   interface FlatmapData {
@@ -37,13 +29,43 @@
     created: string
     servers: string[]
     uuid?: string
+    [propName: string]: unknown
+  }
+const tableHeaders: TableHeader[] = [
+    { label: 'Name', key: 'name' },
+    { label: 'Describes', key: 'describes' },
+    { label: 'Taxon', key: 'taxon' },
+    { label: 'Biological Sex', key: 'biologicalSex' },
+    { label: 'Created', key: 'created' },
+    { label: 'Servers', key: 'servers' },
+    { label: 'UUID', key: 'uuid' },
+  ]
+
+  const flatmapTable: FlatmapTable = {
+    headers: tableHeaders,
+    items: [],
+    sort: '+name',
+    keyword: '',
+    keywordFilter: (keyword: string) => {
+      return (item: FlatmapData) => {
+        // Concatenate all the columns into a single string for a faster lookup.
+        const allColumns = tableHeaders.map(hdr => item[hdr.key]).join(' ')
+        // Lookup the keyword variable in the string with case-insensitive flag.
+        return new RegExp(keyword, 'i').test(allColumns)
+      }
+    },
+    loading: 'header'
   }
 
-  async function getMapTable(mapHeaders: TableHeader): Promise<Table>
+  const table = ref(flatmapTable)
+
+//==============================================================================
+
+  async function loadMapData(serverEndpoints: ServerEndpoint[]): Promise<null>
   {
     const flatmaps: FlatmapData[] = []
     const mapsByUUID: Map<string, FlatmapData> = new Map()
-    for (const server of FLATMAP_SERVER_ENDPOINTS) {
+    for (const server of serverEndpoints) {
       try {
         const result = await fetch(server.url)
         const maps: FlatmapData[] = await result.json()
@@ -69,31 +91,21 @@
         console.log(`Cannot connect to ${server.name} flatmap server at ${server.url}`)
       }
     }
-    const flatmapTable: Table = {
-      headers: mapHeaders,
-      items: [],
-      sort: `+${mapHeaders[0].key}`,
-      keyword: '',
-      keywordFilter: (keyword: string) => {
-        return (item: Item) => {
-          // Concatenate all the columns into a single string for a faster lookup.
-          const allColumns = mapHeaders.map(hdr => item[hdr.key]).join(' ')
-          // Lookup the keyword variable in the string with case-insensitive flag.
-          return new RegExp(keyword, 'i').test(allColumns)
-        }
-      }
-    }
     let index = 1
     flatmaps.forEach(map => {
       map.id = index
-      flatmapTable.items.push(map)
       index += 1
     })
-    return flatmapTable
+    table.value.items = flatmaps
+    table.value.loading = false
+    return null
   }
 
-  const tableData = await getMapTable(mapHeaders)
-  const table = ref(tableData)
+//==============================================================================
+
+  defineExpose({
+    loadMapData
+  })
 
 //  const selectionInfo = ref()
 </script>
@@ -110,6 +122,7 @@ w-table.flatmap-table(
   :selectable-rows="1"
   :mobile-breakpoint="700"
   v-model:sort="table.sort"
+  v-model:loading='table.loading'
   fixed-headers
   resizable-columns
   style="height: 600px")
