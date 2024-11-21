@@ -58,7 +58,7 @@ const tableHeaders: TableHeader[] = [
     { label: 'Release', key: 'git-description'},
     { label: 'Mapmaker', key: 'creator' },
     { label: 'SCKAN Release', key: 'knowledge' },
-    { label: 'Servers', key: 'servers' },
+    { label: 'Servers', key: 'serverList' },
     { label: 'UUID', key: 'uuid' },
   ]
 
@@ -140,6 +140,7 @@ const tableHeaders: TableHeader[] = [
     }
     let index = 1
     flatmaps.forEach(map => {
+      map.serverList = map.servers.join(', ')
       map.id = index
       index += 1
     })
