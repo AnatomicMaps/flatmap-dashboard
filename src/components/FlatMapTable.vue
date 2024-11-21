@@ -25,12 +25,13 @@
     name: string
     describes: string
     taxon: string
-    biologicalSex?: string
+    biologicalSex: string
     created: string
     creator: string
     knowledge: string
     servers: string[]
     uuid?: string
+    'git-description': string
     [propName: string]: unknown
   }
 
@@ -42,6 +43,7 @@
     created: string
     creator: string
     uuid?: string
+    'git-status': Record<string, any>
     sckan: Record<string, any>
   }
 
@@ -53,6 +55,7 @@ const tableHeaders: TableHeader[] = [
     { label: 'Taxon', key: 'taxon' },
     { label: 'Biological Sex', key: 'biologicalSex' },
     { label: 'Created', key: 'created' },
+    { label: 'Release', key: 'git-description'},
     { label: 'Mapmaker', key: 'creator' },
     { label: 'SCKAN Release', key: 'knowledge' },
     { label: 'Servers', key: 'servers' },
@@ -67,6 +70,7 @@ const tableHeaders: TableHeader[] = [
       biologicalSex: '',
       created: '',
       creator: '',
+      'git-description': '',
       knowledge: '',
       servers: ['']
   }
@@ -96,38 +100,43 @@ const tableHeaders: TableHeader[] = [
     const flatmaps: FlatmapData[] = []
     const mapsByUUID: Map<string, FlatmapData> = new Map()
     for (const server of serverEndpoints) {
+      let mapMetadata: FlatmapMetadata[] = []
       try {
         const result = await fetch(server.url)
-        const mapMetadata: FlatmapMetadata[] = await result.json()
-        mapMetadata.forEach(metadata => {
-          const map = Object.assign({}, defaultRow, metadata)
-          if ('creator' in map && map.creator.startsWith('mapmaker ')) {
-            map.creator = map.creator.slice(9)
-          }
-          if ('sckan' in map && 'knowledge-source' in map['sckan']) {
-            map.knowledge = map.sckan['knowledge-source']
-            if (map.knowledge.startsWith('sckan-')) {
-              map.knowledge = map.knowledge.slice(6)
-            }
-          }
-          if ('uuid' in map) {
-            if (mapsByUUID.has(map.uuid!)) {
-              const fm = mapsByUUID.get(map.uuid!)!
-              fm.servers.push(server.name)
-            } else {
-              map.servers = [server.name]
-              mapsByUUID.set(map.uuid!, map)
-              flatmaps.push(map)
-            }
-          } else {
-            map.uuid = ''
-            map.servers = [server.name]
-            flatmaps.push(map)
-          }
-        })
+        mapMetadata = await result.json()
       } catch {
         console.log(`Cannot connect to ${server.name} flatmap server at ${server.url}`)
+        continue
       }
+      mapMetadata.forEach(metadata => {
+        const map = Object.assign({}, defaultRow, metadata)
+        if ('creator' in map && map.creator.startsWith('mapmaker ')) {
+          map.creator = map.creator.slice(9)
+        }
+        if ('git-status' in map && 'description' in map['git-status']) {
+          map['git-description'] = map['git-status'].description
+        }
+        if ('sckan' in map && 'knowledge-source' in map['sckan']) {
+          map.knowledge = map.sckan['knowledge-source']
+          if (map.knowledge.startsWith('sckan-')) {
+            map.knowledge = map.knowledge.slice(6)
+          }
+        }
+        if ('uuid' in map) {
+          if (mapsByUUID.has(map.uuid!)) {
+            const fm = mapsByUUID.get(map.uuid!)!
+            fm.servers.push(server.name)
+          } else {
+            map.servers = [server.name]
+            mapsByUUID.set(map.uuid!, map)
+            flatmaps.push(map)
+          }
+        } else {
+          map.uuid = ''
+          map.servers = [server.name]
+          flatmaps.push(map)
+        }
+      })
     }
     let index = 1
     flatmaps.forEach(map => {
