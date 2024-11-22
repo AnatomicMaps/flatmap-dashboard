@@ -187,7 +187,7 @@ w-table.flatmap-table(
   v-model:loading='table.loading'
   fixed-headers
   resizable-columns
-  style="height: 600px")
+  style="height: calc(100vh - 210px)")
 //  @row-select="selectionInfo = $event"
 //.mt4.title4 Selection info:
 //  pre {{ selectionInfo }}
