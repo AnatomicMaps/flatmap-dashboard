@@ -149,7 +149,7 @@ const tableHeaders: TableHeader[] = [
     flatmaps.forEach(map => {
       if (map.uuid !== '') {
         map.serverList = map.servers.map(server => viewerUrls.has(server)
-                                                 ? `<a href="${viewerUrls.get(server)}?id=${map.uuid}" target="_blank">${server}</a>`
+                                                 ? `<a href="${viewerUrls.get(server)}?id=${map.uuid}" title="View map" target="_blank">${server}</a>`
                                                  : server)
                                     .join(', ')
       } else {
