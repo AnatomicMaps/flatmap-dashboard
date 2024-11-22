@@ -58,7 +58,7 @@ const tableHeaders: TableHeader[] = [
     { label: 'Created', key: 'created' },
     { label: 'Release', key: 'git-description'},
     { label: 'Mapmaker', key: 'creator' },
-    { label: 'SCKAN Release', key: 'knowledge' },
+    { label: 'SCKAN', key: 'knowledge' },
     { label: 'Servers', key: 'serverList' },
     { label: 'UUID', key: 'uuid' },
   ]
