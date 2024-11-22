@@ -36,6 +36,7 @@
   }
 
   interface FlatmapMetadata {
+    id: string
     name: string
     describes: string
     taxon: string
@@ -138,7 +139,7 @@ const tableHeaders: TableHeader[] = [
             flatmaps.push(map)
           }
         } else {
-          map.uuid = ''
+          map.uuid = map.id
           map.servers = [server.name]
           flatmaps.push(map)
         }
