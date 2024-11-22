@@ -99,6 +99,7 @@ const tableHeaders: TableHeader[] = [
   {
     const flatmaps: FlatmapData[] = []
     const mapsByUUID: Map<string, FlatmapData> = new Map()
+    const viewerUrls: Map<string, string> = new Map()
     for (const server of serverEndpoints) {
       let mapMetadata: FlatmapMetadata[] = []
       try {
@@ -107,6 +108,11 @@ const tableHeaders: TableHeader[] = [
       } catch {
         console.log(`Cannot connect to ${server.name} flatmap server at ${server.url}`)
         continue
+      }
+      if (server.viewer === true) {
+        viewerUrls.set(server.name, `${server.url}viewer/`)
+      } else if (server.viewer) {
+        viewerUrls.set(server.name, server.viewer)
       }
       mapMetadata.forEach(metadata => {
         const map = Object.assign({}, defaultRow, metadata)
@@ -140,7 +146,14 @@ const tableHeaders: TableHeader[] = [
     }
     let index = 1
     flatmaps.forEach(map => {
-      map.serverList = map.servers.join(', ')
+      if (map.uuid !== '') {
+        map.serverList = map.servers.map(server => viewerUrls.has(server)
+                                                 ? `<a href="${viewerUrls.get(server)}?id=${map.uuid}" target="_blank">${server}</a>`
+                                                 : server)
+                                    .join(', ')
+      } else {
+        map.serverList = map.servers.join(', ')
+      }
       map.id = index
       index += 1
     })
