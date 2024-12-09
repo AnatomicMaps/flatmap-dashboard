@@ -4,7 +4,7 @@
 
   import {FLATMAP_SERVER_ENDPOINTS} from '../App.vue'
 
-  import FlatmapTable from '../components/FlatMapTable.vue'
+  import FlatmapTable from '../components/FlatmapTable.vue'
 
   const title = 'Flatmaps'
 
