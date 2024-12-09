@@ -85,11 +85,12 @@ const tableHeaders: TableHeader[] = [
     sort: '',
     keyword: '',
     keywordFilter: (keyword: string) => {
+      const keywords = keyword.split(' ').filter(k => (k !== ''))
       return (item: FlatmapData) => {
         // Concatenate all the columns into a single string for a faster lookup.
         const allColumns = tableHeaders.map(hdr => item[hdr.key]).join(' ')
         // Lookup the keyword variable in the string with case-insensitive flag.
-        return new RegExp(keyword, 'i').test(allColumns)
+        return keywords.every(keyword => new RegExp(keyword, 'i').test(allColumns))
       }
     },
     loading: true
