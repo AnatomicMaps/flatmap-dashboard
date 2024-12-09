@@ -30,6 +30,7 @@
     creator: string
     knowledge: string
     servers: string[]
+    serverList: string
     uuid?: string
     'git-description': string
     [propName: string]: unknown
@@ -73,7 +74,8 @@ const tableHeaders: TableHeader[] = [
       creator: '',
       'git-description': '',
       knowledge: '',
-      servers: ['']
+      servers: [''],
+      serverList: ''
   }
 
   const flatmapTable: FlatmapTable = {
