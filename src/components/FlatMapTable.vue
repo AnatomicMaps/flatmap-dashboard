@@ -52,6 +52,7 @@
 //==============================================================================
 
 const tableHeaders: TableHeader[] = [
+    { label: 'Id', key: 'id' },
     { label: 'Name', key: 'name' },
     { label: 'Describes', key: 'describes' },
     { label: 'Taxon', key: 'taxon' },
@@ -81,7 +82,7 @@ const tableHeaders: TableHeader[] = [
   const flatmapTable: FlatmapTable = {
     headers: tableHeaders,
     items: [],
-    sort: '+name',
+    sort: '',
     keyword: '',
     keywordFilter: (keyword: string) => {
       return (item: FlatmapData) => {
