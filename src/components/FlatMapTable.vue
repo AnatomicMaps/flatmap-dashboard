@@ -98,7 +98,7 @@ const tableHeaders: TableHeader[] = [
 
   async function loadMapData(serverEndpoints: ServerEndpoint[]): Promise<null>
   {
-    const flatmaps: FlatmapData[] = []
+    const flatmapData: FlatmapData[] = []
     const mapsByUUID: Map<string, FlatmapData> = new Map()
     const viewerUrls: Map<string, string> = new Map()
     for (const server of serverEndpoints) {
@@ -136,17 +136,23 @@ const tableHeaders: TableHeader[] = [
           } else {
             map.servers = [server.name]
             mapsByUUID.set(map.uuid!, map)
-            flatmaps.push(map)
+            flatmapData.push(map)
           }
         } else {
           map.uuid = map.id
           map.servers = [server.name]
-          flatmaps.push(map)
+          flatmapData.push(map)
         }
       })
     }
+
     let index = 1
-    flatmaps.forEach(map => {
+    flatmapData.forEach(map => {
+      map.id = index
+      index += 1
+    })
+
+    flatmapData.forEach(map => {
       if (map.uuid !== '') {
         map.serverList = map.servers.map(server => viewerUrls.has(server)
                                                  ? `<a href="${viewerUrls.get(server)}?id=${map.uuid}" title="View map" target="_blank">${server}</a>`
@@ -155,10 +161,9 @@ const tableHeaders: TableHeader[] = [
       } else {
         map.serverList = map.servers.join(', ')
       }
-      map.id = index
-      index += 1
     })
-    table.value.items = flatmaps
+
+    table.value.items = flatmapData
     table.value.loading = false
     return null
   }
