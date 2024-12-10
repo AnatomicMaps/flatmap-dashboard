@@ -186,7 +186,7 @@ const tableHeaders: TableHeader[] = [
 <template lang='pug'>
 w-input.mb3(
   v-model="table.keyword"
-  placeholder="Search..."
+  placeholder="Enter words to filter by..."
   inner-icon-left="wi-search")
 w-table.flatmap-table(
   :headers="table.headers"
