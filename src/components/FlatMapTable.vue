@@ -9,6 +9,8 @@
   type TableHeader = {
     key: string
     label: string
+    sortable?: boolean
+    width?: string|number
   }
 
   interface FlatmapTable {
@@ -53,16 +55,16 @@
 
 const tableHeaders: TableHeader[] = [
     { label: 'Id', key: 'id' },
-    { label: 'Name', key: 'name' },
-    { label: 'Describes', key: 'describes' },
-    { label: 'Taxon', key: 'taxon' },
+    { label: 'Name', key: 'name',  width: 160 },
+    { label: 'Describes', key: 'describes', width: 150  },
+    { label: 'Taxon', key: 'taxon', width: 140 },
     { label: 'Biological Sex', key: 'biologicalSex' },
-    { label: 'Created', key: 'created' },
-    { label: 'Release', key: 'git-description'},
+    { label: 'Created', key: 'created', width: 220 },
+    { label: 'Release', key: 'git-description', width: 100},
     { label: 'Mapmaker', key: 'creator' },
     { label: 'SCKAN', key: 'knowledge' },
-    { label: 'Servers', key: 'serverList' },
-    { label: 'UUID', key: 'uuid' },
+    { label: 'Servers', key: 'serverList', sortable: false },
+    { label: 'UUID', key: 'uuid', width: 200 },
   ]
 
   const defaultRow: FlatmapData = {
@@ -201,3 +203,11 @@ w-table.flatmap-table(
 //.mt4.title4 Selection info:
 //  pre {{ selectionInfo }}
 </template>
+
+<style>
+.w-table__cell {
+  word-break: break-word;
+  text-overflow: ellipsis;
+  hyphens: manual;
+}
+</style>
