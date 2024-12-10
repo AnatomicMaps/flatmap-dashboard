@@ -2,9 +2,9 @@
 
   import { onMounted, ref } from 'vue'
 
-  import {FLATMAP_SERVER_ENDPOINTS} from '../App.vue'
+  import {FLATMAP_SERVER_ENDPOINTS} from '@/App.vue'
 
-  import FlatmapTable from '../components/FlatmapTable.vue'
+  import FlatmapTable from '@/components/FlatMapTable.vue'
 
   const title = 'Flatmaps'
 

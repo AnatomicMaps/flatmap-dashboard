@@ -2,7 +2,7 @@
 
   import { ref } from 'vue'
 
-  import type {ServerEndpoint} from '../App.vue'
+  import type {ServerEndpoint} from '@/App.vue'
 
 //==============================================================================
 

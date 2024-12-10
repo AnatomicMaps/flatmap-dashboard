@@ -1,8 +1,9 @@
 //==============================================================================
 
 import { createRouter, createMemoryHistory } from 'vue-router'
-import Overview from '../views/Overview.vue'
-import Flatmaps from '../views/Flatmaps.vue'
+
+import Overview from '@/views/Overview.vue'
+import Flatmaps from '@/views/Flatmaps.vue'
 
 const router = createRouter({
   history: createMemoryHistory(import.meta.env.BASE_URL),

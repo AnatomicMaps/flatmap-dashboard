@@ -10,8 +10,8 @@
 </script>
 
 <script lang="ts">
-  import NavMenu from './components/NavMenu.vue'
-  import Toolbar from './components/Toolbar.vue'
+  import NavMenu from '@/components/NavMenu.vue'
+  import Toolbar from '@/components/Toolbar.vue'
 
   export type ServerEndpoint = {
     name: string

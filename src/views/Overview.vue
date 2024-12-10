@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import { onMounted, ref } from 'vue'
 
-  import {FLATMAP_SERVER_ENDPOINTS} from '../App.vue'
+  import {FLATMAP_SERVER_ENDPOINTS} from '@/App.vue'
 
-  import ServerTable from '../components/ServerTable.vue'
+  import ServerTable from '@/components/ServerTable.vue'
 
   const title = 'Overview'
 
