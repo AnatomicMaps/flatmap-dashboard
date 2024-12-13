@@ -392,11 +392,13 @@ div.selected-rows.w-flex
   .spacer
   w-button.ma1(
     bg-color="info"
-    @click="selectionReset") Clear selection
-  w-button.ma1(
-    bg-color="info"
     @click="selectAll") Select all
   w-button.ma1(
+    bg-color="info"
+    :disabled="filteredSelectedRowText === ''"
+    @click="selectionReset") Clear selection
+  w-button.ma1(
+    :disabled="filteredSelectedRowText === ''"
     @click="selectionDownload") Download
 </template>
 
