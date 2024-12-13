@@ -1,9 +1,9 @@
 <script setup lang="ts">
 
   import { computed, getCurrentInstance, inject, onMounted, ref, useTemplateRef } from 'vue'
-  import type { Ref } from 'vue'
+  import type { Ref, ShallowRef } from 'vue'
 
-  import type { WTable } from 'wave-ui/dist/types/components'
+  import type { WTable } from 'wave-ui/dist/types/components/index.d.ts'
 
   import type {ServerEndpoint} from '@/App.vue'
 
@@ -189,7 +189,7 @@ const tableHeaders: TableHeader[] = [
   let selectionFocus: number = -1
   const selectedRowIds: Ref<number[]> = ref([])
 
-  const flatmapWTable: WTable = useTemplateRef<WTable>('flatmap-table')
+  const flatmapWTable: Readonly<ShallowRef<WTable|null>> = useTemplateRef<WTable>('flatmap-table')
 
   type Filter = Record<string, boolean>
 
@@ -220,9 +220,11 @@ const tableHeaders: TableHeader[] = [
   function selectAll()
   //==================
   {
-    selectedRowIds.value = flatmapWTable.value.sortedItems.map((item: FlatmapData) => +item.id)
-    selectionAnchor = 0
-    selectionFocus = selectedRowIds.value.length - 1
+    if (flatmapWTable.value) {
+      selectedRowIds.value = flatmapWTable.value.sortedItems.map((item: FlatmapData) => +item.id)
+      selectionAnchor = 0
+      selectionFocus = selectedRowIds.value.length - 1
+    }
   }
 
   function selectionReset()
@@ -239,6 +241,7 @@ const tableHeaders: TableHeader[] = [
     const startIndex = Math.min(selectionAnchor, selectionFocus)
     const endIndex = Math.max(selectionAnchor, selectionFocus)
     return makeFilter(Array.from({length: (endIndex - startIndex + 1)}, (_, i) => i + startIndex)
+                           // @ts-ignore
                            .map(i => flatmapWTable.value.sortedItems[i].id))
     }
 
@@ -262,8 +265,10 @@ const tableHeaders: TableHeader[] = [
         // there isn't one then it moves to the next selected with a smaller
         // index. Finally, if that doesn't exist they reset
         let found = false
+        // @ts-ignore
         const maxIndex = flatmapWTable.value.sortedItems.length - 1
         for (let i = index + 1; i <= maxIndex; i++) {
+          // @ts-ignore
           const itemId = flatmapWTable.value.sortedItems[i].id
           if (selectedRowIdsByUid.value[itemId]) {      // search forwards
             selectionAnchor = i
@@ -274,6 +279,7 @@ const tableHeaders: TableHeader[] = [
         }
         if (!found) {
           for (let i = index - 1; i >= 0; i--) {      // search backwards
+            // @ts-ignore
             const itemId = flatmapWTable.value.sortedItems[i].id
             if (selectedRowIdsByUid.value[itemId]) {
               selectionAnchor = i
