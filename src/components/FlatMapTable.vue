@@ -203,15 +203,18 @@ const tableHeaders: TableHeader[] = [
   function selectionDownload()
   //==========================
   {
+    const destination = 'flatmap-export.json'
     const selectedItems = table.value.items.filter(item => selectedRowIdsFilter.value[item.id])
-
-    if (selectedItems.length) {
-      alert(`Downloading ${Object.keys(selectedRowIdsFilter.value).length}/${selectedItems.length} records...`)
-    } else {
-      // Have button disabled...
-      // v-? property ?? Also for clear...
-      alert('Nothing to download...')
-    }
+                                           .map(item => {
+                                             const {_uid, id, serverList, ...cleaned} = item
+                                             return cleaned
+                                           })
+    alert(`Downloading ${selectedItems.length} records as "${destination}"...`)
+    const a = document.createElement('a')
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(selectedItems)], {type: "text/json"}))
+    a.download = destination
+    a.click()
+    selectionReset()
   }
 
   function selectAll()
