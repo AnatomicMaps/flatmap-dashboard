@@ -360,7 +360,9 @@ const filteredSelectedRowText: Ref<string> = computed
 w-input.mb3(
   v-model="table.keyword"
   placeholder="Enter words to filter by..."
-  inner-icon-left="wi-search")
+  inner-icon-left="wi-search"
+  inner-icon-right="wi-cross"
+  @click:inner-icon-right="() => table.keyword = ''")
 w-table(
   ref='flatmap-table'
   :headers="table.headers"
