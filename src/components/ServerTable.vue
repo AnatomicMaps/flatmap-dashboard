@@ -9,6 +9,7 @@
   type TableHeader = {
     key: string
     label: string
+    align?: string
     width?: string|number
   }
 
@@ -25,6 +26,7 @@
     version: string
     url: string
     status: string
+    mapCount: number
     viewer?: string
   }
 
@@ -40,7 +42,8 @@ const tableHeaders: TableHeader[] = [
     { label: 'Endpoint', key: 'url' },
     { label: 'Version', key: 'version' },
     { label: 'Status', key: 'status' },
-    { label: 'Standalone<br/>Viewer', key: 'viewer' }
+    { label: 'Standalone<br/>Viewer', key: 'viewer' },
+    { label: 'Available maps', key: 'mapCount',  width: 40, align: 'right' }
   ]
 
   const serverTable: ServerTable = {
@@ -61,10 +64,14 @@ const tableHeaders: TableHeader[] = [
     for (const server of serverEndpoints) {
       let status
       let systemInfo: ServerMetadata|ServerMetadata[] = []
+      let mapCount = 0
       try {
-        const result = await fetch(`${server.url}/version`)
+        let result = await fetch(`${server.url}/version`)
         systemInfo = await result.json()
         status = 'Active'
+        result = await fetch(server.url)
+        const maps = await result.json()
+        mapCount = maps.length
       } catch {
         console.log(`Cannot connect to ${server.name} flatmap server at ${server.url}`)
         status = 'Unable to connect'
@@ -89,6 +96,7 @@ const tableHeaders: TableHeader[] = [
         url: server.url,
         version,
         status,
+        mapCount,
         viewer
       })
       index += 1
