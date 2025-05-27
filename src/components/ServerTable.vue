@@ -28,6 +28,7 @@
     status: string
     mapCount: number
     viewer?: string
+    mapmaker?: string
   }
 
   interface ServerMetadata {
@@ -43,6 +44,7 @@ const tableHeaders: TableHeader[] = [
     { label: 'Version', key: 'version' },
     { label: 'Status', key: 'status' },
     { label: 'Standalone<br/>Viewer', key: 'viewer' },
+    { label: 'Mapmaker', key: 'mapmaker' },
     { label: 'Available maps', key: 'mapCount',  width: 40, align: 'right' }
   ]
 
@@ -78,11 +80,14 @@ const tableHeaders: TableHeader[] = [
         continue
       }
       let version = ''
+      let mapmaker = 'Disabled'
       let viewer = 'Disabled'
       if (Array.isArray(systemInfo)) {
         for (const system of systemInfo) {
           if (system.id === 'server') {
             version = `v${system.version}`  
+          } else if (system.id === 'mapmaker') {
+            mapmaker = `v${system.version}`
           } else if (system.id === 'viewer') {
             viewer = `v${system.version}`
           }
@@ -97,6 +102,7 @@ const tableHeaders: TableHeader[] = [
         version,
         status,
         mapCount,
+        mapmaker,
         viewer
       })
       index += 1
