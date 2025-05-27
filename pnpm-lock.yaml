@@ -21,8 +21,8 @@ importers:
         specifier: ^4.4.5
         version: 4.5.1(vue@3.5.15(typescript@5.6.3))
       wave-ui:
-        specifier: https://github.com/dbrnz/wave-ui.git#multicol-table-sort
-        version: https://codeload.github.com/dbrnz/wave-ui/tar.gz/fc3f7d7c0ff031d68b68c30bde3c6b3718ae35e7(vue@3.5.15(typescript@5.6.3))
+        specifier: 3.18.0
+        version: 3.18.0(vue@3.5.15(typescript@5.6.3))
     devDependencies:
       '@tsconfig/node20':
         specifier: ^20.1.4
@@ -1374,9 +1374,8 @@ packages:
       typescript:
         optional: true
 
-  wave-ui@https://codeload.github.com/dbrnz/wave-ui/tar.gz/fc3f7d7c0ff031d68b68c30bde3c6b3718ae35e7:
-    resolution: {tarball: https://codeload.github.com/dbrnz/wave-ui/tar.gz/fc3f7d7c0ff031d68b68c30bde3c6b3718ae35e7}
-    version: 3.21.1
+  wave-ui@3.18.0:
+    resolution: {integrity: sha512-IDJ19/UGXigGD+bmq5PINwRTXnHq8oeG8BPBk7O55PTT9DgsvoqmxpJJoApj66qImbDAQ1bFd5MeQb6amHLfHg==}
     engines: {node: '>=16.0.0', pnpm: '>=8.0.0'}
     peerDependencies:
       vue: ^3.2.0
@@ -2679,7 +2678,7 @@ snapshots:
     optionalDependencies:
       typescript: 5.6.3
 
-  wave-ui@https://codeload.github.com/dbrnz/wave-ui/tar.gz/fc3f7d7c0ff031d68b68c30bde3c6b3718ae35e7(vue@3.5.15(typescript@5.6.3)):
+  wave-ui@3.18.0(vue@3.5.15(typescript@5.6.3)):
     dependencies:
       vue: 3.5.15(typescript@5.6.3)
 
