@@ -59,11 +59,11 @@
 const tableHeaders: TableHeader[] = [
     { label: 'Id', key: 'id' },
     { label: 'Name', key: 'name',  width: 160 },
-    { label: 'Describes', key: 'describes', width: 150  },
+    { label: 'Describes', key: 'describes', width: 150 },
     { label: 'Taxon', key: 'taxon', width: 140 },
     { label: 'Biological Sex', key: 'biologicalSex' },
     { label: 'Created', key: 'created', width: 220 },
-    { label: 'Release', key: 'git-description', width: 100},
+    { label: 'Release', key: 'git-description', width: 100 },
     { label: 'Mapmaker', key: 'creator' },
     { label: 'SCKAN', key: 'knowledge' },
     { label: 'Servers', key: 'serverList', sortable: false },
