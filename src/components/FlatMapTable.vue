@@ -9,6 +9,20 @@
 
 //==============================================================================
 
+  // Use the first of these servers as the source of a map's mapmaker log
+
+  const LOG_SERVERS = [
+    'prod',
+    'staging',
+    'curation',
+    'devel',
+    'fccb',
+    'isan',
+    'local'
+  ]
+
+//==============================================================================
+
   type TableHeader = {
     key: string
     label: string
@@ -64,7 +78,7 @@ const tableHeaders: TableHeader[] = [
     { label: 'Biological Sex', key: 'biologicalSex' },
     { label: 'Created', key: 'created', width: 220 },
     { label: 'Release', key: 'git-description', width: 100 },
-    { label: 'Mapmaker', key: 'creator' },
+    { label: 'Mapmaker', key: 'mapmaker' },
     { label: 'SCKAN', key: 'knowledge' },
     { label: 'Servers', key: 'serverList', sortable: false },
     { label: 'UUID', key: 'uuid', width: 200 },
@@ -109,6 +123,7 @@ const tableHeaders: TableHeader[] = [
   {
     const flatmapData: FlatmapData[] = []
     const mapsByUUID: Map<string, FlatmapData> = new Map()
+    const serverUrls: Map<string, string> = new Map()
     const viewerUrls: Map<string, string> = new Map()
     for (const server of serverEndpoints) {
       let mapMetadata: FlatmapMetadata[] = []
@@ -119,6 +134,7 @@ const tableHeaders: TableHeader[] = [
         console.log(`Cannot connect to ${server.name} flatmap server at ${server.url}`)
         continue
       }
+      serverUrls.set(server.name, server.url)
       if (server.viewer === true) {
         viewerUrls.set(server.name, `${server.url}viewer/`)
       } else if (server.viewer) {
@@ -127,7 +143,7 @@ const tableHeaders: TableHeader[] = [
       mapMetadata.forEach(metadata => {
         const map = Object.assign({}, defaultRow, metadata)
         if ('creator' in map && map.creator.startsWith('mapmaker ')) {
-          map.creator = map.creator.slice(9)
+          map.mapmaker = map.creator.slice(9)
         }
         if ('git-status' in map && 'description' in map['git-status']) {
           map['git-description'] = map['git-status'].description
@@ -163,10 +179,23 @@ const tableHeaders: TableHeader[] = [
 
     flatmapData.forEach(map => {
       if (map.uuid !== '') {
-        map.serverList = map.servers.map(server => viewerUrls.has(server)
-                                                 ? `<a href="${viewerUrls.get(server)}?id=${map.uuid}" title="View map" target="_blank">${server}</a>`
-                                                 : server)
-                                    .join(', ')
+        const mapServers = []
+        const serverList: string[] = []
+        for (const server of map.servers) {
+          if (viewerUrls.has(server)) {
+            serverList.push(`<a href="${viewerUrls.get(server)}?id=${map.uuid}" title="View map" target="_blank">${server}</a>`)
+          } else {
+            serverList.push(server)
+          }
+          mapServers.push(server)
+        }
+        map.serverList = serverList.join(', ')
+        for (const logServer of LOG_SERVERS) {
+          if (mapServers.includes(logServer)) {
+            map.mapmaker = `${map.mapmaker}<br/><a href="${serverUrls.get(logServer)}flatmap/${map.uuid}/log" title="Log file" target="_blank">Log</a>`
+            break
+          }
+        }
       } else {
         map.serverList = map.servers.join(', ')
       }
